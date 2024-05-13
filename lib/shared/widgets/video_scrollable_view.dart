@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:toktik/domain/entities/video_post.dart';
+import 'package:toktik/models/video_post_model.dart';
 import 'package:toktik/shared/widgets/video_buttons.dart';
+import 'package:toktik/shared/widgets/video_player.dart';
+import "../data/local_video_post.dart";
 
 class VideoScrollableView extends StatelessWidget {
-  final List<VideoPost> videos;
+  final List<VideoPost> videos =
+      videoPosts.map((e) => VideoPostModel.fromJson(e).toVideoPost()).toList();
 
-  const VideoScrollableView({
+  VideoScrollableView({
     super.key,
-    required this.videos,
+    videos,
   });
 
   @override
@@ -20,8 +24,9 @@ class VideoScrollableView extends StatelessWidget {
         final videoPost = videos[index];
         return Stack(
           children: [
-            Container(
-              color: Colors.black,
+            FullScreenVideoPlayer(
+              caption: videoPost.caption,
+              videoURL: videoPost.videoUrl,
             ),
             VideoButtons(
               video: videoPost,
