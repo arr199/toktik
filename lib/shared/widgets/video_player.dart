@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:toktik/shared/widgets/video_background_gradient.dart';
 import 'package:video_player/video_player.dart';
 
 class FullScreenVideoPlayer extends StatefulWidget {
@@ -53,57 +54,55 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return AspectRatio(
-              aspectRatio: controller.value.aspectRatio,
-              child: Stack(children: [
-                VideoPlayer(controller),
-                Positioned(
-                  child: Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: BounceInDown(
-                            child: Container(
-                              color: Colors.black38,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                  widget.caption,
-                                  textAlign: TextAlign.center,
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (controller.value.isPlaying) {
+                    controller.pause();
+
+                    return;
+                  } else {
+                    controller.play();
+                  }
+                });
+              },
+              child: AspectRatio(
+                aspectRatio: controller.value.aspectRatio,
+                child: Stack(children: [
+                  VideoPlayer(controller),
+                  if (controller.value.isPlaying != true) ...{
+                    const Positioned.fill(child: Align(child: Text("Pause"))),
+                  },
+                  VideoBackgroundGradient(
+                    stops: const [0.1, 1.0],
+                  ),
+                  Positioned(
+                    child: Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: BounceInDown(
+                              child: Container(
+                                color: Colors.black38,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                    widget.caption,
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                    left: 12,
-                    bottom: 12,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          foregroundColor: Colors.white),
-                      onPressed: () {
-                        setState(() {
-                          if (controller.value.isPlaying) {
-                            controller.pause();
-                          } else {
-                            controller.play();
-                          }
-                        });
-                      },
-                      child: Icon(
-                        controller.value.isPlaying
-                            ? Icons.pause
-                            : Icons.play_arrow,
-                      ),
-                    ))
-              ]),
+                ]),
+              ),
             );
           }
         },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:toktik/domain/entities/video_post.dart';
-import 'package:toktik/models/video_post_model.dart';
+import 'package:toktik/infra/models/video_post_model.dart';
 import 'package:toktik/shared/widgets/video_buttons.dart';
 import 'package:toktik/shared/widgets/video_player.dart';
 import "../data/local_video_post.dart";
